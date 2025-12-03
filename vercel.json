@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/fetch-prices",
+      "schedule": "0 8 */1 * *"
+    },
+    {
+      "path": "/api/cron/fetch-news",
+      "schedule": "30 8 */1 * *"
+    },
+    {
+      "path": "/api/cron/generate-posts",
+      "schedule": "0 9 */1 * *"
+    }
+  ]
+}

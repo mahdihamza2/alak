@@ -33,6 +33,7 @@ export default function Header({ settings }: HeaderProps) {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
+    { href: '/blog', label: 'Insights' },
     { href: '/compliance', label: 'Compliance' },
     { href: '/contact', label: 'Contact' },
   ];

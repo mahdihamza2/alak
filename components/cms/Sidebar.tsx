@@ -13,7 +13,13 @@ import {
   Shield,
   LogOut,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  // New icons for Blog & Pricing
+  PenSquare,
+  Newspaper,
+  TrendingUp,
+  Clock,
+  Fuel,
 } from 'lucide-react'
 import { logout } from '@/app/cms/auth/actions'
 
@@ -31,7 +37,14 @@ const mainNavItems: NavItem[] = [
   { name: 'Reports', href: '/cms/dashboard/reports', icon: <FileText size={20} /> },
 ]
 
-const settingsNavItems: NavItem[] = [
+const contentNavItems: NavItem[] = [
+  { name: 'Blog Posts', href: '/cms/dashboard/blog', icon: <PenSquare size={20} /> },
+  { name: 'News Review', href: '/cms/dashboard/news', icon: <Newspaper size={20} /> },
+  { name: 'Oil Prices', href: '/cms/dashboard/pricing', icon: <Fuel size={20} /> },
+]
+
+const systemNavItems: NavItem[] = [
+  { name: 'Scheduled Jobs', href: '/cms/dashboard/jobs', icon: <Clock size={20} /> },
   { name: 'Site Settings', href: '/cms/dashboard/settings', icon: <Settings size={20} /> },
   { name: 'Notifications', href: '/cms/dashboard/notifications', icon: <Bell size={20} /> },
   { name: 'Audit Logs', href: '/cms/dashboard/audit-logs', icon: <Shield size={20} /> },
@@ -125,15 +138,52 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             </ul>
           </div>
 
-          {/* Settings Navigation */}
+          {/* Content & Automation Navigation */}
           <div>
             {!collapsed && (
               <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 px-3">
-                Settings
+                Content & Automation
               </p>
             )}
             <ul className="space-y-1">
-              {settingsNavItems.map((item) => (
+              {contentNavItems.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className={`
+                      flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200
+                      ${isActive(item.href)
+                        ? 'bg-primary-50 text-primary-700 font-medium'
+                        : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
+                      }
+                      ${collapsed ? 'justify-center' : ''}
+                    `}
+                    title={collapsed ? item.name : undefined}
+                  >
+                    <span className={isActive(item.href) ? 'text-primary-600' : ''}>
+                      {item.icon}
+                    </span>
+                    {!collapsed && <span>{item.name}</span>}
+                    {!collapsed && item.badge !== undefined && item.badge > 0 && (
+                      <span className="ml-auto bg-primary-600 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* System Navigation */}
+          <div>
+            {!collapsed && (
+              <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3 px-3">
+                System
+              </p>
+            )}
+            <ul className="space-y-1">
+              {systemNavItems.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
