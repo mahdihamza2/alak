@@ -51,12 +51,20 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="gradient-navy grid-pattern relative py-24 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-text-light-primary mb-6 animate-fade-in">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-6 overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+          style={{ backgroundImage: "url('/images/refinery_image (2).jpg')" }}
+        />
+        {/* Gradient Overlay for professional look */}
+        <div className="absolute inset-0 bg-linear-to-b from-navy-950/70 via-navy-950/60 to-navy-950/80" />
+        <div className="absolute inset-0 bg-linear-to-r from-navy-950/40 to-transparent" />
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in drop-shadow-lg">
             About <span className="text-gold-500">Alak Oil & Gas</span>
           </h1>
-          <p className="text-xl text-text-light-secondary max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
             Nigeria's most transparent energy intermediary, established in 2018 with a commitment to regulatory excellence and verified partnerships.
           </p>
         </div>
@@ -152,7 +160,7 @@ export default function AboutPage() {
                 className="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:shadow-xl transition-all duration-300"
               >
                 <div className="flex items-start gap-6 mb-6">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-700 to-navy-950 rounded-xl flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
+                  <div className="w-24 h-24 bg-linear-to-br from-blue-700 to-navy-950 rounded-xl flex items-center justify-center text-white text-3xl font-bold shrink-0">
                     {exec.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <div className="flex-1">

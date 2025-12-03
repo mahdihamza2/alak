@@ -1,70 +1,35 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { getSiteSettings } from '@/lib/supabase/server';
+import HomeHero from '@/components/sections/HomeHero';
+import ValuePropsSection from '@/components/sections/ValuePropsSection';
 
-export default function Home() {
+export default async function Home() {
+  // Fetch site settings
+  const settings = await getSiteSettings();
+  
+  // Extract settings with defaults
+  const rcNumber = settings.rc_number || '8867061';
+  const tinNumber = settings.tin_number || '33567270-0001';
+  const foundedYear = settings.company_founded_year || '2018';
+  const headOfficeCity = settings.head_office_city || 'Abuja';
+  const commercialOfficeCity = settings.commercial_office_city || 'Lagos';
+  
   return (
     <>
-      <Header />
+      <Header settings={settings} />
       <main>
-        {/* Hero Section */}
-        <section className="gradient-navy grid-pattern relative min-h-screen flex items-center justify-center px-6 pt-20">
-        <div className="max-w-6xl mx-auto text-center animate-fade-in">
-          {/* Trust Badges */}
-          <div className="flex items-center justify-center gap-6 mb-8 text-sm font-mono text-text-light-secondary">
-            <span className="flex items-center gap-2">
-              <span className="h-2 w-2 bg-success rounded-full" />
-              RC: 8867061
-            </span>
-            <span className="text-text-light-tertiary">|</span>
-            <span className="flex items-center gap-2">
-              <span className="h-2 w-2 bg-success rounded-full" />
-              TIN: 33567270-0001
-            </span>
-            <span className="text-text-light-tertiary">|</span>
-            <span>Est. 2018</span>
-            <span className="text-text-light-tertiary">|</span>
-            <span>Abuja & Lagos</span>
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="text-5xl md:text-6xl font-bold text-text-light-primary mb-6 leading-tight">
-            Your Verified Gateway to <br />
-            <span className="text-gold-500">Global Energy Transactions</span>
-          </h1>
-
-          {/* Subheadline */}
-          <p className="text-xl text-text-light-secondary max-w-3xl mx-auto mb-12 leading-relaxed">
-            Nigeria's most transparent energy intermediary. Full regulatory disclosure, 
-            verified credentials, and intelligent buyer-seller matching for crude oil and refined products.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="group px-8 py-4 bg-gold-500 hover:bg-gold-600 text-navy-950 font-semibold rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,183,77,0.5)] hover:-translate-y-1">
-              Verify Our Credentials
-              <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">→</span>
-            </button>
-            <button className="px-8 py-4 border-2 border-text-light-primary text-text-light-primary font-semibold rounded-lg hover:bg-white/10 transition-all duration-300">
-              Begin Partnership Inquiry
-            </button>
-          </div>
-
-          {/* Value Props */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-20 text-left">
-            {[
-              { title: "Transparency First", desc: "RC/TIN prominently displayed" },
-              { title: "Verified Network", desc: "Categorized buyer-seller system" },
-              { title: "Local Expertise", desc: "Dual Nigerian presence" },
-              { title: "Risk Reduction", desc: "Compliance-focused operations" }
-            ].map((item, i) => (
-              <div key={i} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-all duration-300">
-                <h3 className="text-gold-500 font-semibold mb-2">{item.title}</h3>
-                <p className="text-text-light-secondary text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        {/* Hero Section with Clean Slideshow */}
+        <HomeHero 
+          rcNumber={rcNumber}
+          tinNumber={tinNumber}
+          foundedYear={foundedYear}
+          headOfficeCity={headOfficeCity}
+          commercialOfficeCity={commercialOfficeCity}
+        />
+        
+        {/* Value Propositions Section */}
+        <ValuePropsSection />
 
       {/* Quick Info Section */}
       <section className="bg-white py-20 px-6">
@@ -83,7 +48,7 @@ export default function Home() {
               {
                 title: "Regulatory Compliance",
                 desc: "Full CAC registration, verified TIN, and downloadable documentation.",
-                highlight: "RC: 8867061"
+                highlight: `RC: ${rcNumber}`
               },
               {
                 title: "Executive Leadership",
@@ -92,7 +57,7 @@ export default function Home() {
               },
               {
                 title: "Dual Office Presence",
-                desc: "Head office in Abuja and commercial office in Lagos with Google Maps verification.",
+                desc: `Head office in ${headOfficeCity} and commercial office in ${commercialOfficeCity} with Google Maps verification.`,
                 highlight: "Physical Locations"
               }
             ].map((item, i) => (
@@ -106,7 +71,7 @@ export default function Home() {
         </div>
       </section>
       </main>
-      <Footer />
+      <Footer settings={settings} />
     </>
   );
 }

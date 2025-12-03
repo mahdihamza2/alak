@@ -1,0 +1,8 @@
+export { default as HeroSection } from './HeroSection'
+export { default as HeroSlideshow } from './HeroSlideshow'
+export { default as HomeHero } from './HomeHero'
+export { default as ValuePropsSection } from './ValuePropsSection'
+export { default as FeaturesSection } from './FeaturesSection'
+export { default as CTASection } from './CTASection'
+export { default as StatsSection } from './StatsSection'
+export { default as TestimonialsSection } from './TestimonialsSection'

@@ -1,12 +1,46 @@
 'use client';
 
-import { Metadata } from 'next';
 import { Shield, FileCheck, Download, CheckCircle, Copy, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { db } from '@/lib/supabase/client';
+
+interface SiteSettings {
+  rc_number?: string;
+  tin_number?: string;
+  show_rc_number?: string;
+  show_tin_number?: string;
+}
 
 export default function CompliancePage() {
   const [copiedRC, setCopiedRC] = useState(false);
   const [copiedTIN, setCopiedTIN] = useState(false);
+  const [settings, setSettings] = useState<SiteSettings>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const data = await db.settings.getAll();
+        const settingsMap: SiteSettings = {};
+        data?.forEach((s: { key: string; value: unknown }) => {
+          const value = typeof s.value === 'string' ? s.value : String(s.value ?? '');
+          settingsMap[s.key as keyof SiteSettings] = value;
+        });
+        setSettings(settingsMap);
+      } catch (error) {
+        console.error('Error fetching settings:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSettings();
+  }, []);
+
+  // Settings with defaults
+  const rcNumber = settings.rc_number || '8867061';
+  const tinNumber = settings.tin_number || '33567270-0001';
+  const showRcNumber = settings.show_rc_number !== 'false';
+  const showTinNumber = settings.show_tin_number !== 'false';
 
   const copyToClipboard = (text: string, type: 'RC' | 'TIN') => {
     navigator.clipboard.writeText(text);
@@ -76,120 +110,138 @@ export default function CompliancePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="gradient-navy grid-pattern relative py-24 px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-6 overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+          style={{ backgroundImage: "url('/images/refinery_image (5).jpg')" }}
+        />
+        {/* Gradient Overlay for professional look */}
+        <div className="absolute inset-0 bg-linear-to-b from-navy-950/70 via-navy-950/60 to-navy-950/80" />
+        <div className="absolute inset-0 bg-linear-to-r from-navy-950/40 to-transparent" />
+        <div className="max-w-6xl mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <Shield size={48} className="text-gold-500" />
+            <Shield size={48} className="text-gold-500 drop-shadow-lg" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-text-light-primary mb-6 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in drop-shadow-lg">
             Compliance & <span className="text-gold-500">Credentials</span>
           </h1>
-          <p className="text-xl text-text-light-secondary max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
             Full regulatory transparency. Downloadable documentation. Verified credentials you can trust.
           </p>
         </div>
       </section>
 
       {/* Regulatory Credentials Display */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Official Registration Details
-            </h2>
-            <p className="text-lg text-slate-700 max-w-2xl mx-auto">
-              Unlike most competitors, we display our full regulatory credentials publicly
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* RC Number */}
-            <div className="bg-slate-50 border-2 border-blue-700 rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <FileCheck size={24} className="text-blue-700" />
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Registration Number (RC)
-                </h3>
-              </div>
-              <div className="bg-white border border-slate-200 rounded-lg p-4 mb-4">
-                <div className="font-mono text-3xl font-bold text-navy-950 mb-2">
-                  8867061
-                </div>
-                <div className="text-sm text-slate-600">
-                  Corporate Affairs Commission of Nigeria
-                </div>
-              </div>
-              <button
-                onClick={() => copyToClipboard('8867061', 'RC')}
-                className="flex items-center gap-2 text-blue-700 font-semibold hover:text-gold-600 transition-colors"
-              >
-                {copiedRC ? (
-                  <>
-                    <Check size={16} />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy size={16} />
-                    Copy RC Number
-                  </>
-                )}
-              </button>
+      {(showRcNumber || showTinNumber) && (
+        <section className="py-20 px-6 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-slate-900 mb-4">
+                Official Registration Details
+              </h2>
+              <p className="text-lg text-slate-700 max-w-2xl mx-auto">
+                Unlike most competitors, we display our full regulatory credentials publicly
+              </p>
             </div>
 
-            {/* TIN */}
-            <div className="bg-slate-50 border-2 border-success rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <FileCheck size={24} className="text-success" />
-                <h3 className="text-lg font-semibold text-slate-900">
-                  Tax Identification Number (TIN)
-                </h3>
-              </div>
-              <div className="bg-white border border-slate-200 rounded-lg p-4 mb-4">
-                <div className="font-mono text-3xl font-bold text-navy-950 mb-2">
-                  33567270-0001
+            <div className={`grid grid-cols-1 ${showRcNumber && showTinNumber ? 'md:grid-cols-2' : ''} gap-8 max-w-4xl mx-auto`}>
+              {/* RC Number */}
+              {showRcNumber && (
+                <div className="bg-slate-50 border-2 border-blue-700 rounded-2xl p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <FileCheck size={24} className="text-blue-700" />
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      Registration Number (RC)
+                    </h3>
+                  </div>
+                  <div className="bg-white border border-slate-200 rounded-lg p-4 mb-4">
+                    <div className="font-mono text-3xl font-bold text-navy-950 mb-2">
+                      {loading ? '...' : rcNumber}
+                    </div>
+                    <div className="text-sm text-slate-600">
+                      Corporate Affairs Commission of Nigeria
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(rcNumber, 'RC')}
+                    className="flex items-center gap-2 text-blue-700 font-semibold hover:text-gold-600 transition-colors"
+                  >
+                    {copiedRC ? (
+                      <>
+                        <Check size={16} />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={16} />
+                        Copy RC Number
+                      </>
+                    )}
+                  </button>
                 </div>
-                <div className="text-sm text-slate-600">
-                  Federal Inland Revenue Service
-                </div>
-              </div>
-              <button
-                onClick={() => copyToClipboard('33567270-0001', 'TIN')}
-                className="flex items-center gap-2 text-success font-semibold hover:text-gold-600 transition-colors"
-              >
-                {copiedTIN ? (
-                  <>
-                    <Check size={16} />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy size={16} />
-                    Copy TIN
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
+              )}
 
-          {/* Verification Notice */}
-          <div className="max-w-4xl mx-auto mt-12 bg-blue-50 border border-blue-200 rounded-xl p-6">
-            <div className="flex items-start gap-4">
-              <CheckCircle size={24} className="text-blue-700 flex-shrink-0 mt-1" />
-              <div>
-                <h4 className="font-semibold text-slate-900 mb-2">
-                  Independent Verification Available
-                </h4>
-                <p className="text-slate-700 text-sm leading-relaxed">
-                  You can independently verify our registration with the Corporate Affairs Commission (CAC) 
-                  using our RC number 8867061, and our tax status with the Federal Inland Revenue Service (FIRS) 
-                  using our TIN 33567270-0001. We encourage all potential partners to perform due diligence.
-                </p>
-              </div>
+              {/* TIN */}
+              {showTinNumber && (
+                <div className="bg-slate-50 border-2 border-success rounded-2xl p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <FileCheck size={24} className="text-success" />
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      Tax Identification Number (TIN)
+                    </h3>
+                  </div>
+                  <div className="bg-white border border-slate-200 rounded-lg p-4 mb-4">
+                    <div className="font-mono text-3xl font-bold text-navy-950 mb-2">
+                      {loading ? '...' : tinNumber}
+                    </div>
+                    <div className="text-sm text-slate-600">
+                      Federal Inland Revenue Service
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(tinNumber, 'TIN')}
+                    className="flex items-center gap-2 text-success font-semibold hover:text-gold-600 transition-colors"
+                  >
+                    {copiedTIN ? (
+                      <>
+                        <Check size={16} />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={16} />
+                        Copy TIN
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
+
+            {/* Verification Notice */}
+            {(showRcNumber || showTinNumber) && (
+              <div className="max-w-4xl mx-auto mt-12 bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <div className="flex items-start gap-4">
+                  <CheckCircle size={24} className="text-blue-700 shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-2">
+                      Independent Verification Available
+                    </h4>
+                    <p className="text-slate-700 text-sm leading-relaxed">
+                      You can independently verify our registration with the Corporate Affairs Commission (CAC) 
+                      {showRcNumber && <> using our RC number {rcNumber}</>}
+                      {showRcNumber && showTinNumber && ', and '}
+                      {showTinNumber && <>our tax status with the Federal Inland Revenue Service (FIRS) using our TIN {tinNumber}</>}. 
+                      We encourage all potential partners to perform due diligence.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Downloadable Documents */}
       <section className="py-20 px-6 bg-slate-50">

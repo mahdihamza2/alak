@@ -139,15 +139,23 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="gradient-navy grid-pattern relative py-24 px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-6 overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+          style={{ backgroundImage: "url('/images/refinery_image (4).jpg')" }}
+        />
+        {/* Gradient Overlay for professional look */}
+        <div className="absolute inset-0 bg-linear-to-b from-navy-950/70 via-navy-950/60 to-navy-950/80" />
+        <div className="absolute inset-0 bg-linear-to-r from-navy-950/40 to-transparent" />
+        <div className="max-w-6xl mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <Mail size={48} className="text-gold-500" />
+            <Mail size={48} className="text-gold-500 drop-shadow-lg" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-text-light-primary mb-6 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in drop-shadow-lg">
             Get in <span className="text-gold-500">Touch</span>
           </h1>
-          <p className="text-xl text-text-light-secondary max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
             Submit a partnership inquiry or reach out to our offices directly. We respond within 24 hours.
           </p>
         </div>
@@ -477,26 +485,26 @@ export default function ContactPage() {
 
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">
-                        <MapPin size={20} className="text-slate-500 flex-shrink-0 mt-1" />
+                        <MapPin size={20} className="text-slate-500 shrink-0 mt-1" />
                         <span className="text-slate-700">{office.address}</span>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <Phone size={20} className="text-slate-500 flex-shrink-0" />
+                        <Phone size={20} className="text-slate-500 shrink-0" />
                         <a href={`tel:${office.phone}`} className="text-blue-700 hover:text-gold-600 transition-colors">
                           {office.phone}
                         </a>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <Mail size={20} className="text-slate-500 flex-shrink-0" />
+                        <Mail size={20} className="text-slate-500 shrink-0" />
                         <a href={`mailto:${office.email}`} className="text-blue-700 hover:text-gold-600 transition-colors">
                           {office.email}
                         </a>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <Clock size={20} className="text-slate-500 flex-shrink-0" />
+                        <Clock size={20} className="text-slate-500 shrink-0" />
                         <span className="text-slate-700">{office.hours}</span>
                       </div>
                     </div>

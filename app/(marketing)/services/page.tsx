@@ -125,15 +125,23 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="gradient-navy grid-pattern relative py-24 px-6">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-6 overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
+          style={{ backgroundImage: "url('/images/refinery_image (3).jpg')" }}
+        />
+        {/* Gradient Overlay for professional look */}
+        <div className="absolute inset-0 bg-linear-to-b from-navy-950/70 via-navy-950/60 to-navy-950/80" />
+        <div className="absolute inset-0 bg-linear-to-r from-navy-950/40 to-transparent" />
+        <div className="max-w-6xl mx-auto text-center relative z-10">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <Droplet size={48} className="text-gold-500" />
+            <Droplet size={48} className="text-gold-500 drop-shadow-lg" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-text-light-primary mb-6 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in drop-shadow-lg">
             Product <span className="text-gold-500">Portfolio</span>
           </h1>
-          <p className="text-xl text-text-light-secondary max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
             Crude oil and refined petroleum products with verified supply chains, quality documentation, and transparent pricing.
           </p>
         </div>
@@ -232,7 +240,7 @@ export default function ServicesPage() {
                     <ul className="space-y-2">
                       {product.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                          <CheckCircle size={16} className="text-success flex-shrink-0 mt-0.5" />
+                          <CheckCircle size={16} className="text-success shrink-0 mt-0.5" />
                           {feature}
                         </li>
                       ))}
@@ -333,7 +341,7 @@ export default function ServicesPage() {
                 key={index}
                 className="flex items-start gap-6 bg-slate-50 border border-slate-200 rounded-xl p-6 hover:shadow-md transition-all duration-300"
               >
-                <div className="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-700 to-navy-950 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                <div className="shrink-0 w-16 h-16 bg-linear-to-br from-blue-700 to-navy-950 rounded-lg flex items-center justify-center text-white font-bold text-lg">
                   {phase.step}
                 </div>
                 <div className="flex-1">

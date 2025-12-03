@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Alak Icon - Simplified mark for favicon/app icon usage -->
+<svg version="1.1" viewBox="0 0 512 512" width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="64" fill="#0A1931"/>
+  <!-- Flame accent -->
+  <ellipse cx="320" cy="150" rx="45" ry="65" fill="#FF4606"/>
+  <ellipse cx="300" cy="130" rx="25" ry="45" fill="#FFC101"/>
+  <!-- Stylized A -->
+  <path d="M256 100L156 400H200L220 340H292L312 400H356L256 100ZM232 300L256 220L280 300H232Z" fill="#FFFFFF"/>
+</svg>

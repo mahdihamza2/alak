@@ -2,11 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
-export default function Header() {
+interface HeaderProps {
+  settings?: {
+    company_name?: string
+    rc_number?: string
+  }
+}
+
+export default function Header({ settings }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Settings with defaults
+  const companyName = settings?.company_name || 'Alak Oil & Gas'
+  const rcNumber = settings?.rc_number || '8867061'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,23 +49,28 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-gold-500 rounded-lg flex items-center justify-center font-bold text-navy-950 text-xl group-hover:bg-gold-600 transition-colors">
-              A
-            </div>
+            <Image
+              src="/images/logo/alak-logo-full.svg"
+              alt="Alak Oil & Gas Logo"
+              width={48}
+              height={48}
+              className="shrink-0"
+              priority
+            />
             <div className="flex flex-col">
               <span
                 className={`font-bold text-lg leading-tight transition-colors ${
                   isScrolled ? 'text-navy-950' : 'text-white'
                 }`}
               >
-                Alak Oil & Gas
+                {companyName}
               </span>
               <span
                 className={`text-xs font-mono transition-colors ${
                   isScrolled ? 'text-slate-600' : 'text-slate-300'
                 }`}
               >
-                RC: 8867061
+                RC: {rcNumber}
               </span>
             </div>
           </Link>
